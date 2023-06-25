@@ -10,20 +10,15 @@ export const socketHandler = (socket: Socket, io: Server) => {
     const dataURL = data.audio.dataURL.split(",").pop();
     let fileBuffer = Buffer.from(dataURL, "base64");
 
-    // const key = await saveAudioFileToS3(fileBuffer);
-    // const fileKey = await startTranscribtion(key!!);
+    const key = await saveAudioFileToS3(fileBuffer);
+    const fileKey = await startTranscribtion(key!!);
 
-    // const text = await downloadTranscript(fileKey!!);
-    // const gptResponse = await getGPTResponse(text);
+    const text = await downloadTranscript(fileKey!!);
+    const gptResponse = await getGPTResponse(text);
 
-    // const audio = await generateSpeech(gptResponse!!);
+    const audio = await generateSpeech(gptResponse!!);
 
-    // socket.emit("results", audio, text);
-
-    await delay(5000);
-
-    console.log("Hello this is going as planned");
-    socket.emit("results", "fdsa", "fdsf");
+    socket.emit("results", audio, text);
   });
 
   //When socket get disconnected
@@ -31,5 +26,3 @@ export const socketHandler = (socket: Socket, io: Server) => {
     console.log("Client disconnected");
   });
 };
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
