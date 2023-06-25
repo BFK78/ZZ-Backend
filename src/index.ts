@@ -14,7 +14,7 @@ const server = http.createServer(app);
 
 //Cors configuration
 const corsOption = {
-  origin: "http://localhost:3000",
+  origin: process.env.CLIENT_URL,
 };
 
 const io = new Server(server, {
